@@ -6,7 +6,7 @@ There are many built in documents, it makes you build your website more convinie
 
 ---
 
-## This document contains commands to run the program, and output for these commands.
+This document contains commands to run the program, and output for these commands.
 
 py -m django --version
 django-admin startproject mysite
