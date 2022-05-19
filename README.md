@@ -17,8 +17,8 @@ py manage.py startapp polls
 py manage.py runserver
 http://localhost:8000/polls/
 python manage.py migrate
-Getting runtime help¶
-django-admin help¶
+Getting runtime help
+django-admin help
 Run django-admin help to display usage information and a list of the commands provided by each application.
 
 Run django-admin help --commands to display a list of all available commands.
