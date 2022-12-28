@@ -33,17 +33,17 @@ python manage.py makemigrations polls //for changes to models
 python manage.py sqlmigrate polls 0001 //return sql and migration name
 looks like below, for postgreSQL
 BEGIN;
---
--- Create model Question
---
+
+Create model Question
+
 CREATE TABLE "polls_question" (
 "id" serial NOT NULL PRIMARY KEY,
 "question_text" varchar(200) NOT NULL,
 "pub_date" timestamp with time zone NOT NULL
 );
---
--- Create model Choice
---
+
+Create model Choice
+
 CREATE TABLE "polls_choice" (
 "id" serial NOT NULL PRIMARY KEY,
 "choice_text" varchar(200) NOT NULL,
@@ -65,12 +65,12 @@ Run python manage.py migrate to apply those changes to the database.
 
 python manage.py shell //play with api
 
-> > > from polls.models import Choice, Question # Import the model classes we just wrote.
+from polls.models import Choice, Question  Import the model classes we just wrote.
 
 No questions are in the system yet.
 
-> > > Question.objects.all()
-> > > <QuerySet []>
+Question.objects.all()
+<QuerySet []>
 
 Create a new Question.
 
@@ -80,61 +80,61 @@ Django expects a datetime with tzinfo for pub_date. Use timezone.now()
 
 instead of datetime.datetime.now() and it will do the right thing.
 
-> > > from django.utils import timezone
-> > > q = Question(question_text="What's new?", pub_date=timezone.now())
+from django.utils import timezone
+q = Question(question_text="What's new?", pub_date=timezone.now())
 
 Save the object into the database. You have to call save() explicitly.
 
-> > > q.save()
+ q.save()
 
-# Now it has an ID.
+Now it has an ID.
 
-> > > q.id
-> > > 1
+q.id
+1
 
 Access model field values via Python attributes.
 
-> > > q.question_text
-> > > "What's new?"
-> > > q.pub_date
-> > > datetime.datetime(2012, 2, 26, 13, 0, 0, 775217, tzinfo=<UTC>)
+q.question_text
+ "What's new?"
+ q.pub_date
+ datetime.datetime(2012, 2, 26, 13, 0, 0, 775217, tzinfo=<UTC>)
 
 Change values by changing the attributes, then calling save().
 
-> > > q.question_text = "What's up?"
-> > > q.save()
+ q.question_text = "What's up?"
+ q.save()
 
 objects.all() displays all the questions in the database.
 
-> > > Question.objects.all()
-> > > <QuerySet [<Question: Question object (1)>]>
-> > > from polls.models import Choice, Question
+ Question.objects.all()
+ <QuerySet [<Question: Question object (1)>]>
+ from polls.models import Choice, Question
 
 Make sure our **str**() addition worked.
 
-> > > Question.objects.all()
-> > > <QuerySet [<Question: What's up?>]>
+Question.objects.all()
+<QuerySet [<Question: What's up?>]>
 
 Django provides a rich database lookup API that's entirely driven by
 
-# keyword arguments.
+ keyword arguments.
 
-> > > Question.objects.filter(id=1)
-> > > <QuerySet [<Question: What's up?>]>
-> > > Question.objects.filter(question_text\_\_startswith='What')
-> > > <QuerySet [<Question: What's up?>]>
+ Question.objects.filter(id=1)
+ <QuerySet [<Question: What's up?>]>
+ Question.objects.filter(question_text\_\_startswith='What')
+ <QuerySet [<Question: What's up?>]>
 
 Get the question that was published this year.
 
-> > > from django.utils import timezone
-> > > current_year = timezone.now().year
-> > > Question.objects.get(pub_date\_\_year=current_year)
-> > > <Question: What's up?>
+ from django.utils import timezone
+ current_year = timezone.now().year
+ Question.objects.get(pub_date\_\_year=current_year)
+ <Question: What's up?>
 
 Request an ID that doesn't exist, this will raise an exception.
 
-> > > Question.objects.get(id=2)
-> > > Traceback (most recent call last):
+ Question.objects.get(id=2)
+ Traceback (most recent call last):
 
     ...
 
@@ -146,14 +146,14 @@ shortcut for primary-key exact lookups.
 
 The following is identical to Question.objects.get(id=1).
 
-> > > Question.objects.get(pk=1)
-> > > <Question: What's up?>
+ Question.objects.get(pk=1)
+ <Question: What's up?>
 
 Make sure our custom method worked.
 
-> > > q = Question.objects.get(pk=1)
-> > > q.was_published_recently()
-> > > True
+ q = Question.objects.get(pk=1)
+ q.was_published_recently()
+ True
 
 Give the Question a couple of Choices. The create call constructs a new
 
@@ -165,32 +165,30 @@ a set to hold the "other side" of a ForeignKey relation
 
 (e.g. a question's choice) which can be accessed via the API.
 
-> > > q = Question.objects.get(pk=1)
+ q = Question.objects.get(pk=1)
 
 Display any choices from the related object set -- none so far.
 
-> > > q.choice_set.all()
-> > > <QuerySet []>
+ q.choice_set.all()
+ <QuerySet []>
 
 Create three choices.
-
-> > > q.choice_set.create(choice_text='Not much', votes=0)
-> > > <Choice: Not much>
-> > > q.choice_set.create(choice_text='The sky', votes=0)
-> > > <Choice: The sky>
-> > > c = q.choice_set.create(choice_text='Just hacking again', votes=0)
+ q.choice_set.create(choice_text='Not much', votes=0)
+ <Choice: Not much>
+ q.choice_set.create(choice_text='The sky', votes=0)
+ c = q.choice_set.create(choice_text='Just hacking again', votes=0)
 
 Choice objects have API access to their related Question objects.
 
-> > > c.question
-> > > <Question: What's up?>
+ c.question
+ <Question: What's up?>
 
 And vice versa: Question objects get access to Choice objects.
 
-> > > q.choice_set.all()
-> > > <QuerySet [<Choice: Not much>, <Choice: The sky>, <Choice: Just hacking again>]>
-> > > q.choice_set.count()
-> > > 3
+ q.choice_set.all()
+ <QuerySet [<Choice: Not much>, <Choice: The sky>, <Choice: Just hacking again>]>
+ q.choice_set.count()
+ 3
 
 The API automatically follows relationships as far as you need.
 
@@ -202,49 +200,49 @@ Find all Choices for any question whose pub_date is in this year
 
 (reusing the 'current_year' variable we created above).
 
-> > > Choice.objects.filter(question**pub_date**year=current_year)
-> > > <QuerySet [<Choice: Not much>, <Choice: The sky>, <Choice: Just hacking again>]>
+ Choice.objects.filter(question**pub_date**year=current_year)
+ <QuerySet [<Choice: Not much>, <Choice: The sky>, <Choice: Just hacking again>]>
 
 Let's delete one of the choices. Use delete() for that.
 
-> > > c = q.choice_set.filter(choice_text\_\_startswith='Just hacking')
-> > > c.delete()
+ c = q.choice_set.filter(choice_text\_\_startswith='Just hacking')
+ c.delete()
 
 py manage.py createsuperuser
 python manage.py shell
 python manage.py test polls
 
-> > > from django.test.utils import setup_test_environment
-> > > setup_test_environment()
-> > > from django.test import Client
-> > >
-> > > # create an instance of the client for our use
-> > >
-> > > client = Client()
-> > >
-> > > # get a response from '/'
-> > >
-> > > response = client.get('/')
-> > > Not Found: /
-> > >
-> > > # we should expect a 404 from that address; if you instead see an
-> > >
-> > > # "Invalid HTTP_HOST header" error and a 400 response, you probably
-> > >
-> > > # omitted the setup_test_environment() call described earlier.
-> > >
-> > > response.status_code
-> > > 404
-> > >
-> > > # on the other hand we should expect to find something at '/polls/'
-> > >
-> > > # we'll use 'reverse()' rather than a hardcoded URL
-> > >
-> > > from django.urls import reverse
-> > > response = client.get(reverse('polls:index'))
-> > > response.status_code
-> > > 200
-> > > response.content
-> > > b'\n <ul>\n \n <li><a href="/polls/1/">What&#x27;s up?</a></li>\n \n </ul>\n\n'
-> > > response.context['latest_question_list']
-> > > <QuerySet [<Question: What's up?>]>
+ from django.test.utils import setup_test_environment
+ setup_test_environment()
+ from django.test import Client
+
+ create an instance of the client for our use
+
+ client = Client()
+
+ get a response from '/'
+
+ response = client.get('/')
+ Not Found: /
+
+ we should expect a 404 from that address; if you instead see an
+
+ "Invalid HTTP_HOST header" error and a 400 response, you probably
+
+ omitted the setup_test_environment() call described earlier.
+
+ response.status_code
+ 404
+
+ on the other hand we should expect to find something at '/polls/'
+
+ we'll use 'reverse()' rather than a hardcoded URL
+
+ from django.urls import reverse
+response = client.get(reverse('polls:index'))
+ response.status_code
+ 200
+response.content
+ b'\n <ul>\n \n <li><a href="/polls/1/">What&#x27;s up?</a></li>\n \n </ul>\n\n'
+ response.context['latest_question_list']
+ <QuerySet [<Question: What's up?>]>
