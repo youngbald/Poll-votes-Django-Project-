@@ -1,13 +1,9 @@
-# Poll-votes-Django-Project-
+Poll-votes-Django-Project
+This project is based on Django, a Python web framework. It follows the instructions in the Django documentation. The database used in this project is SQLite.
 
-This project is created based on Django python, process followed by https://docs.djangoproject.com/en/4.0/intro/
-It gives you basic understanding about Django, notice that the database used is SQLlite.
-There are many built in documents, it makes you build your website more convinience and easy to understand.
+This document contains the commands to run the program and the output for each command.
 
----
-
-This document contains commands to run the program, and output for these commands.
-
+Copy code
 py -m django --version
 django-admin startproject mysite
 py manage.py runserver
@@ -17,16 +13,21 @@ py manage.py startapp polls
 py manage.py runserver
 http://localhost:8000/polls/
 python manage.py migrate
-Getting runtime help
+To get runtime help, use the following commands:
+
 django-admin help
-Run django-admin help to display usage information and a list of the commands provided by each application.
+This will display usage information and a list of the commands provided by each application.
 
-Run django-admin help --commands to display a list of all available commands.
+django-admin help --commands
+This will display a list of all available commands.
 
-Run django-admin help <command> to display a description of the given command and a list of its available options.
+django-admin help <command>
+This will display a description of the given command and a list of its available options.
+
 django-admin check auth admin myapp
 django-admin check --tag models --tag compatibility
 django-admin check --database default --database other
+
 python manage.py migrate //for database
 python manage.py makemigrations polls //for changes to models
 python manage.py sqlmigrate polls 0001 //return sql and migration name
